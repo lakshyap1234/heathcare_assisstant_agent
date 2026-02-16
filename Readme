@@ -1,0 +1,91 @@
+# Medical Assistant Agent - Desktop Application Documentation
+
+## Overview
+This is a Tkinter-based desktop application that provides an AI-powered medical assistant for doctor-patient consultations. It integrates Google's Gemini 2.5 Flash API for intelligent medical analysis and uses SQLite for persistent data storage.
+
+## System Architecture
+
+### Core Components
+
+#### 1. **agent.py** - Application Entry Point
+- Main entry point for the desktop application
+- Initializes the Tkinter root window
+- Validates and configures the Google AI API key
+- Launches the medical assistant GUI
+
+#### 2. **MedicalAssitant.py** - Backend AI Agent
+The core business logic layer that handles:
+- **API Integration**: Connects to Google Gemini 2.5 Flash for AI-powered medical analysis
+- **Database Management**: SQLite database with 4 main tables:
+    - `patients`: Stores patient demographics (ID, name, age, gender, registration date)
+    - `conversations`: Records individual consultation sessions with chief complaints and summaries
+    - `messages`: Stores complete message history for each consultation
+    - `patient_history`: Archives symptoms and differential diagnoses for historical reference
+
+**Key Methods**:
+- `register_patient()`: Adds new patients to the system
+- `create_conversation()`: Initiates a new consultation session
+- `chat()`: Processes doctor queries with AI while maintaining patient context
+- `build_context_prompt()`: Creates AI prompts enriched with patient history for contextual analysis
+- `generate_consultation_summary()`: Automatically extracts summary, symptoms, and diagnoses from conversation
+- `end_conversation()`: Archives consultation data to patient history
+- `clear_all_data()` / `clear_patient_data()`: Data management functions
+
+#### 3. **frontend.py** - User Interface Layer
+Tkinter-based GUI with two main panels:
+
+**Left Panel - Patient Management**:
+- Patient list with searchable selection
+- Patient information display including demographics and visit history
+- "New Patient" registration dialog
+- Patient refresh functionality
+
+**Right Panel - Consultation Interface**:
+- Real-time chat display with color-coded messages (doctor in blue, AI in green, system in gray)
+- Message input field for doctor queries
+- Automated consultation summary generation
+- Consultation end form with summary, symptoms, and diagnoses fields
+
+## Data Flow
+
+1. **Patient Registration**: Doctor registers new patient → Data stored in `patients` table
+2. **Consultation Start**: Doctor selects patient and enters chief complaint → New conversation created
+3. **Interactive Chat**: 
+     - Doctor enters query → System retrieves patient history
+     - Context-aware prompt built with patient medical history
+     - AI generates analysis using Gemini API
+     - Conversation stored in `messages` table
+4. **Consultation End**:
+     - AI automatically summarizes conversation
+     - Doctor reviews/edits summary, symptoms, and diagnoses
+     - Final data saved to `patient_history` table
+
+## Key Features
+
+- **Contextual AI Analysis**: Each consultation incorporates full patient history
+- **Long-term Memory**: System maintains comprehensive patient records across multiple visits
+- **Automated Summarization**: AI-powered extraction of clinical summaries
+- **Data Persistence**: SQLite database for offline functionality
+- **Structured Output**: AI responses formatted with bullets, sections, and clinical insights
+- **Role-based Access**: Designed for doctor-patient consultations with clear medical workflows
+
+## Database Schema
+
+Three primary data relationships:
+- Patients → Conversations (one-to-many)
+- Conversations → Messages (one-to-many)
+- Patients → Patient History (one-to-many)
+
+## Security & Compliance Notes
+
+- AI constraints: Cannot prescribe medications, specify tests, or provide definitive diagnoses
+- Only provides differential considerations and clinical insights
+- Designed to support doctor decision-making, not replace medical judgment
+
+## How to run
+
+-Go to agent.py and run.
+
+## Updates
+
+-This for future updates
